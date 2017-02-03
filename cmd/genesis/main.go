@@ -71,15 +71,6 @@ func main() {
 
 	debug = *options.Debug
 
-	if *options.Version {
-		if Version == "" {
-			fmt.Printf("genesis (development)%s\n", Version)
-		} else {
-			fmt.Printf("genesis v%s\n", Version)
-		}
-		os.Exit(0)
-	}
-
 	c := NewCommand().With(options)
 
 	c.HelpGroup("INFO:")
@@ -98,7 +89,7 @@ func main() {
 				ansi.Fprintf(os.Stderr, "    -T, --trace      Even more debugging, including debugging inside called\n")
 				ansi.Fprintf(os.Stderr, "                     tools (like spruce and bosh).\n")
 				ansi.Fprintf(os.Stderr, "    -C, --cwd        Effective working directory.  Defaults to '.'\n")
-				ansi.Fprintf(os.Stderr, "    -y, --yes        Answer 'yes' to all question, automatically.\n")
+				ansi.Fprintf(os.Stderr, "    -y, --yes        Answer `yes' to all question, automatically.\n")
 				ansi.Fprintf(os.Stderr, "\n\n  COMMANDS\n")
 				ansi.Fprintf(os.Stderr, "    compile-kit      Create a distributable kit archive from dev.\n")
 				ansi.Fprintf(os.Stderr, "    decompile-kit    Unpack a kit archive to dev.\n")
@@ -395,22 +386,14 @@ func main() {
 		})
 
 	/* genesis version */
-	c.Dispatch("version", "Print the version of Genesis.",
-		func(opts Options, args []string, help bool) error {
-			if help {
-				ansi.Fprintf(os.Stdout, "genesis v%s\n", Version)
-				ansi.Fprintf(os.Stdout, "USAGE: genesis version\n\n")
-				ansi.Fprintf(os.Stdout, "OPTIONS\n")
-				return nil
-			}
-
-			if *opts.Version {
-				ansi.Fprintf(os.Stdout, "Really just needed to use opts.")
-			}
-
-			ansi.Fprintf(os.Stdout, "This is genesis version.")
-			return nil
-		})
+	if *options.Version {
+		if Version == "" {
+			ansi.Fprintf("genesis @C{(development release)}\n")
+		} else {
+			ansi.Fprintf(os.Stdout, "genesis v%s\n", Version)
+		}
+		os.Exit(0)
+	}
 
 	/* genesis yamls */
 	c.Dispatch("yamls", "Print a list of the YAML files used for a single environment.",

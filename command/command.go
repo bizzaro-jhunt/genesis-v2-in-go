@@ -1,4 +1,4 @@
-package main
+package command
 
 import (
 	"fmt"
@@ -11,27 +11,19 @@ import (
 )
 
 type Options struct {
-	Compilekit   *string
-	Decompilekit *string
-	Describe     *string
-	Download     *string
-	Graph        *string
-	Init         *string
-	Lookup       *string
-	Manifest     *string
-	New          *string
-	Ping         *string
-	Repipe       *string
-	Secrets      *string
-	Summary      *bool
-	Version      *bool
-	Yamls        *string
+	Cwd     *string
+	Debug   *bool
+	Help    *bool
+	Trace   *bool
+	Verbose *bool
+	Yes     *bool
 }
 
 type Handler func(opts Options, args []string, help bool) error
 
 type Command struct {
 	help       [][]string
+	summary    map[string]string
 	commands   map[string]string
 	deprecated map[string]bool
 	options    Options

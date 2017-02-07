@@ -1,4 +1,4 @@
-package main
+package command
 
 import (
 	"fmt"
@@ -195,7 +195,7 @@ func HelpEditMacro(singular, plural string) {
 				Outputs the resultant %[1]s info as a JSON object.
 				Suppresses interactive dialogues and confirmation.`, singular),
 		true, "--raw")
-	FlagHelp(fmt.Sprintf(`A string partially matching the name of a single %[1]s 
+	FlagHelp(fmt.Sprintf(`A string partially matching the name of a single %[1]s
 				or a UUID exactly matching the UUID of a %[1]s.
 				Not setting this value explicitly will default it to the empty string.`, singular),
 		false, fmt.Sprintf("<%s>", singular))

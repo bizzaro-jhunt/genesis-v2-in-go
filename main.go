@@ -12,6 +12,7 @@ import (
 	"strings"
 	"time"
 
+	. "github.com/jhunt/genesis-v2-in-go/command"
 	"github.com/pborman/getopt"
 	"github.com/starkandwayne/goutils/ansi"
 )
@@ -36,21 +37,12 @@ var Version = ""
 
 func main() {
 	options := Options{
-		Compilekit:   getopt.StringLong("compile-kit", 0, "Create a distributable kit archive from dev."),
-		Decompilekit: getopt.StringLong("decompile-kit", 0, "Unpack a kit to dev."),
-		Describe:     getopt.StringLong("describe", 0, "", "Describe a Concourse pipeline, in words."),
-		Download:     getopt.StringLong("download", 0, "", "Download a Genesis Kit from the Internet."),
-		Graph:        getopt.StringLong("graph", 0, "", "Draw a Concourse pipeline."),
-		Init:         getopt.StringLong("init", 0, "", "Initialize a new Genesis deployment."),
-		Lookup:       getopt.StringLong("lookup", 0, "", "Find a key set in environment manifests."),
-		Manifest:     getopt.StringLong("manifest", 0, "", "Generate a redacted BOSH deployment manifest for an environment."),
-		New:          getopt.StringLong("new", 0, "", "Create a new Genesis deployment environment."),
-		Ping:         getopt.StringLong("ping", 0, "", "See if the genesis binary is a real thing."),
-		Repipe:       getopt.StringLong("repipe", 0, "", "Configure a Concourse pipeline for automating deployments."),
-		Secrets:      getopt.StringLong("secrets", 0, "", "Re-generate // rotate credentials (passwords, keys, etc.)."),
-		Summary:      getopt.BoolLong("summary", 0, "Print a summary of defined environments."),
-		Version:      getopt.BoolLong("version", 0, "Print the version of Genesis."),
-		Yamls:        getopt.StringLong("yamls", 0, "Print a list of the YAML files used for a single environment."),
+		Cwd:     getopt.StringLong("cwd", 0, 'C', "Effective working directory. Defaults to '.'"),
+		Debug:   getopt.BoolLong("debug", 0, 'D', "Enable debugging to print helpful messages about what Genesis is doing (for developers)."),
+		Help:    getopt.BoolLong("help", 0, 'h', "Show the help"),
+		Trace:   getopt.BoolLong("trace", 0, 'T', "Even more debugging, including debugging inside called tools like 'spruce' and 'bosh'."),
+		Verbose: getopt.BoolLong("verbose", 0, 'v', "Enable debugging to print helpful messages about what Genesis is doing (for operators)."),
+		Yes:     getopt.BoolLong("yes", 0, 'y', "Answer 'yes' to all questions automatically."),
 	}
 
 	var command []string
@@ -89,7 +81,7 @@ func main() {
 				ansi.Fprintf(os.Stderr, "    -T, --trace      Even more debugging, including debugging inside called\n")
 				ansi.Fprintf(os.Stderr, "                     tools (like spruce and bosh).\n")
 				ansi.Fprintf(os.Stderr, "    -C, --cwd        Effective working directory.  Defaults to '.'\n")
-				ansi.Fprintf(os.Stderr, "    -y, --yes        Answer `yes' to all question, automatically.\n")
+				ansi.Fprintf(os.Stderr, "    -y, --yes        Answer 'yes' to all questions, automatically.\n")
 				ansi.Fprintf(os.Stderr, "\n\n  COMMANDS\n")
 				ansi.Fprintf(os.Stderr, "    compile-kit      Create a distributable kit archive from dev.\n")
 				ansi.Fprintf(os.Stderr, "    decompile-kit    Unpack a kit archive to dev.\n")
@@ -106,7 +98,7 @@ func main() {
 				ansi.Fprintf(os.Stderr, "    summary          Print a summary of defined environments.\n")
 				ansi.Fprintf(os.Stderr, "    version          Print the version of genesis\n")
 				ansi.Fprintf(os.Stderr, "    yamls            Print a list of the YAML files used for a single environment.\n")
-				ansi.Fprintf(os.Stderr, "\n  See `genesis COMMAND -h' for more specific, per-command usage information.\n")
+				ansi.Fprintf(os.Stderr, "\n  See 'genesis COMMAND -h' for more specific, per-command usage information.\n")
 				return nil
 			} else if args[0] == "help" {
 				ansi.Fprintf(os.Stderr, "@R{This is getting a bit too meta, don't you think?}\n")
@@ -122,8 +114,7 @@ func main() {
 		func(opts Options, args []string, help bool) error {
 			if help {
 				ansi.Fprintf(os.Stdout, "genesis v%s\n", Version)
-				ansi.Fprintf(os.Stdout, "USAGE: genesis compile-kit -n NAME -v VERSION\n")
-				ansi.Fprintf(os.Stdout, "\n")
+				ansi.Fprintf(os.Stdout, "USAGE: genesis compile-kit -n NAME -v VERSION\n\n")
 				ansi.Fprintf(os.Stdout, "OPTIONS\n")
 				ansi.Fprintf(os.Stdout, "  -n, --name      Name of the kit archive.\n")
 				ansi.Fprintf(os.Stdout, "  -v, --version   Version to package.\n")
@@ -143,8 +134,7 @@ func main() {
 		func(opts Options, args []string, help bool) error {
 			if help {
 				ansi.Fprintf(os.Stdout, "genesis v%s\n", Version)
-				ansi.Fprintf(os.Stdout, "USAGE: genesis decompile-kit [NAME/VERSION | path/to/kit.tar.gz]\n")
-				ansi.Fprintf(os.Stdout, "\n")
+				ansi.Fprintf(os.Stdout, "USAGE: genesis decompile-kit [NAME/VERSION | path/to/kit.tar.gz]\n\n")
 				ansi.Fprintf(os.Stdout, "OPTIONS\n")
 				ansi.Fprintf(os.Stdout, "  -f, --force  Overwrite dev/, if it exists.\n")
 				return nil
@@ -202,8 +192,7 @@ func main() {
 		func(opts Options, args []string, help bool) error {
 			if help {
 				ansi.Fprintf(os.Stdout, "genesis v%s\n", Version)
-				ansi.Fprintf(os.Stdout, "USAGE: genesis graph [pipeline-layout]\n")
-				ansi.Fprintf(os.Stdout, "\n")
+				ansi.Fprintf(os.Stdout, "USAGE: genesis graph [pipeline-layout]\n\n")
 				ansi.Fprintf(os.Stdout, "OPTIONS\n")
 				ansi.Fprintf(os.Stdout, "  -c, --config     Path to the pipeline configuration file, which specifies\n")
 				ansi.Fprintf(os.Stdout, "                   Git parameters, notification settings, pipeline layouts,\n")
@@ -304,8 +293,7 @@ func main() {
 		func(opts Options, args []string, help bool) error {
 			if help {
 				ansi.Fprintf(os.Stdout, "genesis v%s\n", Version)
-				ansi.Fprintf(os.Stdout, "USAGE: genesis ping\n")
-				ansi.Fprintf(os.Stdout, "\n")
+				ansi.Fprintf(os.Stdout, "USAGE: genesis ping\n\n")
 				ansi.Fprintf(os.Stdout, "OPTIONS\n")
 				return nil
 			}

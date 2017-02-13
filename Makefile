@@ -7,9 +7,8 @@ BUILD_TYPE?=build
 #all: format tests shield plugins
 
 genesis:
-	@go fmt main.go
-	@go build main.go
-	@mv main genesis
+	@go fmt .
+	@go build -o genesis .
 	@echo "Your Genesis is ready in ./$@, $$(whoami)..."
 
 .PHONY: genesis

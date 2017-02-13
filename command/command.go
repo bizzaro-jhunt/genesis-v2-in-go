@@ -24,7 +24,7 @@ type Handler func(opts Options, args []string, help bool) error
 type Command struct {
 	help       [][]string
 	summary    map[string]string
-	commands   map[string]string
+	commands   map[string]Handler
 	deprecated map[string]bool
 	options    Options
 }
@@ -91,7 +91,7 @@ func (c *Command) Alias(alias string, command string) {
 func (c *Command) AliasesFor(command string) []string {
 	aliases := []string{}
 	if _, found := c.commands[command]; !found {
-		panic(fmt.Sprintf("unknown command `%s' to find aliases for", command))
+		return []string{}
 	}
 	for alias, _ := range c.commands {
 		if c.isAliasFor(alias, command) {
@@ -167,7 +167,7 @@ func (c *Command) do(cmd []string, help bool) error {
 			return err
 		}
 	}
-	return fmt.Errorf("unrecognized command %s\n", strings.Join(cmd, " "))
+	return fmt.Errorf("unrecognized command %s", strings.Join(cmd, " "))
 }
 
 func (c *Command) Execute(cmd ...string) error {

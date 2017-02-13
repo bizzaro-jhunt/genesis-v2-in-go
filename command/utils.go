@@ -8,8 +8,9 @@ import (
 	"strings"
 
 	"github.com/starkandwayne/goutils/ansi"
-	"github.com/starkandwayne/shield/api"
 )
+
+var debug bool
 
 func BoolString(tf bool) string {
 	if tf {
@@ -30,20 +31,12 @@ func PrettyJSON(raw string) string {
 
 func DEBUG(format string, args ...interface{}) {
 	if debug {
-		content := fmt.Sprintf(format, args...)
+		content := ansi.Sprintf(format, args...)
 		lines := strings.Split(content, "\n")
 		for i, line := range lines {
 			lines[i] = "DEBUG> " + line
 		}
 		content = strings.Join(lines, "\n")
 		fmt.Fprintf(os.Stderr, "%s\n", content)
-	}
-}
-
-func DisplayBackend(cfg *api.Config) {
-	if cfg.BackendURI() == "" {
-		ansi.Fprintf(os.Stderr, "No current SHIELD backend\n\n")
-	} else {
-		ansi.Fprintf(os.Stderr, "Using @G{%s} (%s) as SHIELD backend\n\n", cfg.BackendURI(), cfg.Backend)
 	}
 }

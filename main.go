@@ -2,17 +2,13 @@ package main
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
-	"regexp"
-	"sort"
 	"strings"
-	"time"
 
-	. "github.com/jhunt/genesis-v2-in-go/command"
+	. "github.com/jhunt/genesis/command"
 	"github.com/pborman/getopt"
 	"github.com/starkandwayne/goutils/ansi"
 )
@@ -37,12 +33,12 @@ var Version = ""
 
 func main() {
 	options := Options{
-		Cwd:     getopt.StringLong("cwd", 0, 'C', "Effective working directory. Defaults to '.'"),
-		Debug:   getopt.BoolLong("debug", 0, 'D', "Enable debugging to print helpful messages about what Genesis is doing (for developers)."),
-		Help:    getopt.BoolLong("help", 0, 'h', "Show the help"),
-		Trace:   getopt.BoolLong("trace", 0, 'T', "Even more debugging, including debugging inside called tools like 'spruce' and 'bosh'."),
-		Verbose: getopt.BoolLong("verbose", 0, 'v', "Enable debugging to print helpful messages about what Genesis is doing (for operators)."),
-		Yes:     getopt.BoolLong("yes", 0, 'y', "Answer 'yes' to all questions automatically."),
+		Cwd:     getopt.StringLong("cwd", 'C', ".", "Effective working directory. Defaults to '.'"),
+		Debug:   getopt.BoolLong("debug", 'D', "Enable debugging to print helpful messages about what Genesis is doing (for developers)."),
+		Help:    getopt.BoolLong("help", 'h', "Show the help"),
+		Trace:   getopt.BoolLong("trace", 'T', "Even more debugging, including debugging inside called tools like 'spruce' and 'bosh'."),
+		Verbose: getopt.BoolLong("verbose",'v', "Enable debugging to print helpful messages about what Genesis is doing (for operators)."),
+		Yes:     getopt.BoolLong("yes", 'y', "Answer 'yes' to all questions automatically."),
 	}
 
 	var command []string
@@ -72,7 +68,11 @@ func main() {
 				buf := bytes.Buffer{}
 				getopt.PrintUsage(&buf)
 				ansi.Fprintf(os.Stderr, strings.Split(buf.String(), "\n")[0]+"\n")
-				ansi.Fprintf(os, Stderr, "genesis v%s\n", Version)
+				if Version == "" {
+					ansi.Fprintf(os.Stderr, "genesis @*{development version 🦄}\n")
+				} else {
+					ansi.Fprintf(os.Stderr, "genesis v%s\n", Version)
+				}
 				ansi.Fprintf(os.Stderr, "USAGE: genesis [OPTIONS] COMMAND [MORE OPTIONS]\n")
 				ansi.Fprintf(os.Stderr, "\n  OPTIONS\n")
 				ansi.Fprintf(os.Stderr, "    -h, --help       Show this help screen.\n")
@@ -106,8 +106,7 @@ func main() {
 			}
 			return c.Help(args...)
 		})
-
-	c.Alias("help", "usage")
+	c.Alias("usage", "help")
 
 	/* genesis compile-kit */
 	c.Dispatch("compile-kit", "Create a distributable kit archive from dev.",
@@ -119,10 +118,6 @@ func main() {
 				ansi.Fprintf(os.Stdout, "  -n, --name      Name of the kit archive.\n")
 				ansi.Fprintf(os.Stdout, "  -v, --version   Version to package.\n")
 				return nil
-			}
-
-			if *opts.Compilekit {
-				ansi.Fprintf(os.Stdout, "Really just needed to use opts.")
 			}
 
 			ansi.Fprintf(os.Stdout, "This is genesis compile-kit.")
@@ -138,10 +133,6 @@ func main() {
 				ansi.Fprintf(os.Stdout, "OPTIONS\n")
 				ansi.Fprintf(os.Stdout, "  -f, --force  Overwrite dev/, if it exists.\n")
 				return nil
-			}
-
-			if *opts.Decompilekit {
-				ansi.Fprintf(os.Stdout, "Really just needed to use opts.")
 			}
 
 			ansi.Fprintf(os.Stdout, "This is genesis decompile-kit.")
@@ -161,10 +152,6 @@ func main() {
 				return nil
 			}
 
-			if *opts.Describe {
-				ansi.Fprintf(os.Stdout, "Really just needed to use opts.")
-			}
-
 			ansi.Fprintf(os.Stdout, "This is genesis describe.")
 			return nil
 		})
@@ -177,10 +164,6 @@ func main() {
 				ansi.Fprintf(os.Stdout, "USAGE: genesis download NAME[/VERSION] [...]\n\n")
 				ansi.Fprintf(os.Stdout, "OPTIONS\n")
 				return nil
-			}
-
-			if *opts.Download {
-				ansi.Fprintf(os.Stdout, "Really just needed to use opts.")
 			}
 
 			ansi.Fprintf(os.Stdout, "This is genesis download.")
@@ -200,10 +183,6 @@ func main() {
 				return nil
 			}
 
-			if *opts.Graph {
-				ansi.Fprintf(os.Stdout, "Really just needed to use opts.")
-			}
-
 			ansi.Fprintf(os.Stdout, "This is genesis graph.")
 			return nil
 		})
@@ -220,10 +199,6 @@ func main() {
 				return nil
 			}
 
-			if *opts.Init {
-				ansi.Fprintf(os.Stdout, "Really just needed to use opts.")
-			}
-
 			ansi.Fprintf(os.Stdout, "This is genesis init.")
 			return nil
 		})
@@ -236,10 +211,6 @@ func main() {
 				ansi.Fprintf(os.Stdout, "USAGE: genesis lookup key env-name default-value\n\n")
 				ansi.Fprintf(os.Stdout, "OPTIONS\n")
 				return nil
-			}
-
-			if *opts.Lookup {
-				ansi.Fprintf(os.Stdout, "Really just needed to use opts.")
 			}
 
 			ansi.Fprintf(os.Stdout, "This is genesis lookup.")
@@ -260,10 +231,6 @@ func main() {
 				return nil
 			}
 
-			if *opts.Manifest {
-				ansi.Fprintf(os.Stdout, "Really just needed to use opts.")
-			}
-
 			ansi.Fprintf(os.Stdout, "This is genesis manifest.")
 			return nil
 		})
@@ -280,10 +247,6 @@ func main() {
 				return nil
 			}
 
-			if *opts.New {
-				ansi.Fprintf(os.Stdout, "Really just needed to use opts.")
-			}
-
 			ansi.Fprintf(os.Stdout, "This is genesis new.")
 			return nil
 		})
@@ -296,10 +259,6 @@ func main() {
 				ansi.Fprintf(os.Stdout, "USAGE: genesis ping\n\n")
 				ansi.Fprintf(os.Stdout, "OPTIONS\n")
 				return nil
-			}
-
-			if *opts.Ping {
-				ansi.Fprintf(os.Stdout, "Really just needed to use opts.")
 			}
 
 			ansi.Fprintf(os.Stdout, "This is genesis ping.")
@@ -324,10 +283,6 @@ func main() {
 				return nil
 			}
 
-			if *opts.Repipe {
-				ansi.Fprintf(os.Stdout, "Really just needed to use opts.")
-			}
-
 			ansi.Fprintf(os.Stdout, "This is genesis repipe.")
 			return nil
 		})
@@ -346,10 +301,6 @@ func main() {
 				return nil
 			}
 
-			if *opts.Secrets {
-				ansi.Fprintf(os.Stdout, "Really just needed to use opts.")
-			}
-
 			ansi.Fprintf(os.Stdout, "This is genesis secrets.")
 			return nil
 		})
@@ -358,15 +309,11 @@ func main() {
 	c.Dispatch("summary", "Print a summary of defined environments.",
 		func(opts Options, args []string, help bool) error {
 			if help {
-				ansi.Frpintf(os.Stdout, "genesis v$VERSION\n")
-				ansi.Frpintf(os.Stdout, "USAGE: genesis summary\n\n")
-				ansi.Frpintf(os.Stdout, "OPTIONS\n")
-				ansi.Frpintf(os.Stdout, "$GLOBAL_USAGE\n")
+				ansi.Fprintf(os.Stdout, "genesis v$VERSION\n")
+				ansi.Fprintf(os.Stdout, "USAGE: genesis summary\n\n")
+				ansi.Fprintf(os.Stdout, "OPTIONS\n")
+				ansi.Fprintf(os.Stdout, "$GLOBAL_USAGE\n")
 				return nil
-			}
-
-			if *opts.Summary {
-				ansi.Fprintf(os.Stdout, "Really just needed to use opts.")
 			}
 
 			ansi.Fprintf(os.Stdout, "This is genesis summary.")
@@ -374,14 +321,15 @@ func main() {
 		})
 
 	/* genesis version */
-	if *options.Version {
-		if Version == "" {
-			ansi.Fprintf("genesis @C{(development release)}\n")
-		} else {
-			ansi.Fprintf(os.Stdout, "genesis v%s\n", Version)
-		}
-		os.Exit(0)
-	}
+	c.Dispatch("version", "Print the current version of Genesis.",
+		func (opts Options, args []string, help bool) error {
+			if Version == "" {
+				ansi.Fprintf(os.Stdout, "genesis @C{(development release)}\n")
+			} else {
+				ansi.Fprintf(os.Stdout, "genesis v%s\n", Version)
+			}
+			return nil
+		})
 
 	/* genesis yamls */
 	c.Dispatch("yamls", "Print a list of the YAML files used for a single environment.",
@@ -393,11 +341,13 @@ func main() {
 				return nil
 			}
 
-			if *opts.Yamls {
-				ansi.Fprintf(os.Stdout, "Really just needed to use opts.")
-			}
-
 			ansi.Fprintf(os.Stdout, "This is genesis yamls.")
 			return nil
 		})
+
+	err := c.Execute(os.Args[1:]...)
+	if err != nil {
+		ansi.Fprintf(os.Stderr, "@R{!!! %s}\n", err)
+		os.Exit(1)
+	}
 }

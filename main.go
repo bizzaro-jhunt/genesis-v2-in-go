@@ -37,7 +37,7 @@ func main() {
 		Debug:   getopt.BoolLong("debug", 'D', "Enable debugging to print helpful messages about what Genesis is doing (for developers)."),
 		Help:    getopt.BoolLong("help", 'h', "Show the help"),
 		Trace:   getopt.BoolLong("trace", 'T', "Even more debugging, including debugging inside called tools like 'spruce' and 'bosh'."),
-		Verbose: getopt.BoolLong("verbose",'v', "Enable debugging to print helpful messages about what Genesis is doing (for operators)."),
+		Verbose: getopt.BoolLong("verbose", 'v', "Enable debugging to print helpful messages about what Genesis is doing (for operators)."),
 		Yes:     getopt.BoolLong("yes", 'y', "Answer 'yes' to all questions automatically."),
 	}
 
@@ -322,7 +322,7 @@ func main() {
 
 	/* genesis version */
 	c.Dispatch("version", "Print the current version of Genesis.",
-		func (opts Options, args []string, help bool) error {
+		func(opts Options, args []string, help bool) error {
 			if Version == "" {
 				ansi.Fprintf(os.Stdout, "genesis @C{(development release)}\n")
 			} else {

@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
@@ -10,7 +9,7 @@ import (
 
 	. "github.com/jhunt/genesis/command"
 	"github.com/pborman/getopt"
-	"github.com/starkandwayne/goutils/ansi"
+	fmt "github.com/starkandwayne/goutils/ansi"
 )
 
 func require(good bool, msg string) {
@@ -67,41 +66,41 @@ func main() {
 			if len(args) == 0 {
 				buf := bytes.Buffer{}
 				getopt.PrintUsage(&buf)
-				ansi.Fprintf(os.Stderr, strings.Split(buf.String(), "\n")[0]+"\n")
+				fmt.Fprintf(os.Stderr, strings.Split(buf.String(), "\n")[0]+"\n")
 				if Version == "" {
-					ansi.Fprintf(os.Stderr, "genesis @*{development version 🦄}\n")
+					fmt.Fprintf(os.Stderr, "genesis @*{development version 🦄}\n")
 				} else {
-					ansi.Fprintf(os.Stderr, "genesis v%s\n", Version)
+					fmt.Fprintf(os.Stderr, "genesis v%s\n", Version)
 				}
-				ansi.Fprintf(os.Stderr, "USAGE: genesis [OPTIONS] COMMAND [MORE OPTIONS]\n")
-				ansi.Fprintf(os.Stderr, "\n  OPTIONS\n")
-				ansi.Fprintf(os.Stderr, "    -h, --help       Show this help screen.\n")
-				ansi.Fprintf(os.Stderr, "    -D, --debug      Enable debugging, printing helpful message about what\n")
-				ansi.Fprintf(os.Stderr, "                     Genesis is doing, to standard error.\n")
-				ansi.Fprintf(os.Stderr, "    -T, --trace      Even more debugging, including debugging inside called\n")
-				ansi.Fprintf(os.Stderr, "                     tools (like spruce and bosh).\n")
-				ansi.Fprintf(os.Stderr, "    -C, --cwd        Effective working directory.  Defaults to '.'\n")
-				ansi.Fprintf(os.Stderr, "    -y, --yes        Answer 'yes' to all questions, automatically.\n")
-				ansi.Fprintf(os.Stderr, "\n\n  COMMANDS\n")
-				ansi.Fprintf(os.Stderr, "    compile-kit      Create a distributable kit archive from dev.\n")
-				ansi.Fprintf(os.Stderr, "    decompile-kit    Unpack a kit archive to dev.\n")
-				ansi.Fprintf(os.Stderr, "    describe         Describe a Concourse pipeline, in words.\n")
-				ansi.Fprintf(os.Stderr, "    download         Download a Genesis Kit from the Internet.\n")
-				ansi.Fprintf(os.Stderr, "    graph            Draw a Concourse pipeline.\n")
-				ansi.Fprintf(os.Stderr, "    init             Initialize a new Genesis deployment.\n")
-				ansi.Fprintf(os.Stderr, "    lookup           Find a key set in environment manifests.\n")
-				ansi.Fprintf(os.Stderr, "    manifest         Generate a redacted BOSH deployment manifest for an environment.\n")
-				ansi.Fprintf(os.Stderr, "    new              Create a new Genesis deployment environment.\n")
-				ansi.Fprintf(os.Stderr, "    ping             See if the genesis binary is a real thing.\n")
-				ansi.Fprintf(os.Stderr, "    repipe           Configure a Concourse pipeline for automating deployments.\n")
-				ansi.Fprintf(os.Stderr, "    secrets          Re-generate // rotate credentials (passwords, keys, etc.).\n")
-				ansi.Fprintf(os.Stderr, "    summary          Print a summary of defined environments.\n")
-				ansi.Fprintf(os.Stderr, "    version          Print the version of genesis\n")
-				ansi.Fprintf(os.Stderr, "    yamls            Print a list of the YAML files used for a single environment.\n")
-				ansi.Fprintf(os.Stderr, "\n  See 'genesis COMMAND -h' for more specific, per-command usage information.\n")
+				fmt.Fprintf(os.Stderr, "USAGE: genesis [OPTIONS] COMMAND [MORE OPTIONS]\n")
+				fmt.Fprintf(os.Stderr, "\n  OPTIONS\n")
+				fmt.Fprintf(os.Stderr, "    -h, --help       Show this help screen.\n")
+				fmt.Fprintf(os.Stderr, "    -D, --debug      Enable debugging, printing helpful message about what\n")
+				fmt.Fprintf(os.Stderr, "                     Genesis is doing, to standard error.\n")
+				fmt.Fprintf(os.Stderr, "    -T, --trace      Even more debugging, including debugging inside called\n")
+				fmt.Fprintf(os.Stderr, "                     tools (like spruce and bosh).\n")
+				fmt.Fprintf(os.Stderr, "    -C, --cwd        Effective working directory.  Defaults to '.'\n")
+				fmt.Fprintf(os.Stderr, "    -y, --yes        Answer 'yes' to all questions, automatically.\n")
+				fmt.Fprintf(os.Stderr, "\n\n  COMMANDS\n")
+				fmt.Fprintf(os.Stderr, "    compile-kit      Create a distributable kit archive from dev.\n")
+				fmt.Fprintf(os.Stderr, "    decompile-kit    Unpack a kit archive to dev.\n")
+				fmt.Fprintf(os.Stderr, "    describe         Describe a Concourse pipeline, in words.\n")
+				fmt.Fprintf(os.Stderr, "    download         Download a Genesis Kit from the Internet.\n")
+				fmt.Fprintf(os.Stderr, "    graph            Draw a Concourse pipeline.\n")
+				fmt.Fprintf(os.Stderr, "    init             Initialize a new Genesis deployment.\n")
+				fmt.Fprintf(os.Stderr, "    lookup           Find a key set in environment manifests.\n")
+				fmt.Fprintf(os.Stderr, "    manifest         Generate a redacted BOSH deployment manifest for an environment.\n")
+				fmt.Fprintf(os.Stderr, "    new              Create a new Genesis deployment environment.\n")
+				fmt.Fprintf(os.Stderr, "    ping             See if the genesis binary is a real thing.\n")
+				fmt.Fprintf(os.Stderr, "    repipe           Configure a Concourse pipeline for automating deployments.\n")
+				fmt.Fprintf(os.Stderr, "    secrets          Re-generate // rotate credentials (passwords, keys, etc.).\n")
+				fmt.Fprintf(os.Stderr, "    summary          Print a summary of defined environments.\n")
+				fmt.Fprintf(os.Stderr, "    version          Print the version of genesis\n")
+				fmt.Fprintf(os.Stderr, "    yamls            Print a list of the YAML files used for a single environment.\n")
+				fmt.Fprintf(os.Stderr, "\n  See 'genesis COMMAND -h' for more specific, per-command usage information.\n")
 				return nil
 			} else if args[0] == "help" {
-				ansi.Fprintf(os.Stderr, "@R{This is getting a bit too meta, don't you think?}\n")
+				fmt.Fprintf(os.Stderr, "@R{This is getting a bit too meta, don't you think?}\n")
 				return nil
 			}
 			return c.Help(args...)
@@ -112,15 +111,15 @@ func main() {
 	c.Dispatch("compile-kit", "Create a distributable kit archive from dev.",
 		func(opts Options, args []string, help bool) error {
 			if help {
-				ansi.Fprintf(os.Stdout, "genesis v%s\n", Version)
-				ansi.Fprintf(os.Stdout, "USAGE: genesis compile-kit -n NAME -v VERSION\n\n")
-				ansi.Fprintf(os.Stdout, "OPTIONS\n")
-				ansi.Fprintf(os.Stdout, "  -n, --name      Name of the kit archive.\n")
-				ansi.Fprintf(os.Stdout, "  -v, --version   Version to package.\n")
+				fmt.Printf("genesis v%s\n", Version)
+				fmt.Printf("USAGE: genesis compile-kit -n NAME -v VERSION\n\n")
+				fmt.Printf("OPTIONS\n")
+				fmt.Printf("  -n, --name      Name of the kit archive.\n")
+				fmt.Printf("  -v, --version   Version to package.\n")
 				return nil
 			}
 
-			ansi.Fprintf(os.Stdout, "This is genesis compile-kit.")
+			fmt.Printf("This is genesis compile-kit.")
 			return nil
 		})
 
@@ -128,14 +127,14 @@ func main() {
 	c.Dispatch("decompile-kit", "Unpack a kit archive to dev.",
 		func(opts Options, args []string, help bool) error {
 			if help {
-				ansi.Fprintf(os.Stdout, "genesis v%s\n", Version)
-				ansi.Fprintf(os.Stdout, "USAGE: genesis decompile-kit [NAME/VERSION | path/to/kit.tar.gz]\n\n")
-				ansi.Fprintf(os.Stdout, "OPTIONS\n")
-				ansi.Fprintf(os.Stdout, "  -f, --force  Overwrite dev/, if it exists.\n")
+				fmt.Printf("genesis v%s\n", Version)
+				fmt.Printf("USAGE: genesis decompile-kit [NAME/VERSION | path/to/kit.tar.gz]\n\n")
+				fmt.Printf("OPTIONS\n")
+				fmt.Printf("  -f, --force  Overwrite dev/, if it exists.\n")
 				return nil
 			}
 
-			ansi.Fprintf(os.Stdout, "This is genesis decompile-kit.")
+			fmt.Printf("This is genesis decompile-kit.")
 			return nil
 		})
 
@@ -143,16 +142,16 @@ func main() {
 	c.Dispatch("describe", "Describe a Concourse pipeline with words.",
 		func(opts Options, args []string, help bool) error {
 			if help {
-				ansi.Fprintf(os.Stdout, "genesis v%s\n", Version)
-				ansi.Fprintf(os.Stdout, "USAGE: genesis describe [pipeline-layout]\n\n")
-				ansi.Fprintf(os.Stdout, "OPTIONS\n")
-				ansi.Fprintf(os.Stdout, "  -c, --config     Path to the pipeline configuration file, which specifies\n")
-				ansi.Fprintf(os.Stdout, "                   Git parameters, notification settings, pipeline layouts,\n")
-				ansi.Fprintf(os.Stdout, "                   etc.  Defaults to 'ci.yml'\n")
+				fmt.Printf("genesis v%s\n", Version)
+				fmt.Printf("USAGE: genesis describe [pipeline-layout]\n\n")
+				fmt.Printf("OPTIONS\n")
+				fmt.Printf("  -c, --config     Path to the pipeline configuration file, which specifies\n")
+				fmt.Printf("                   Git parameters, notification settings, pipeline layouts,\n")
+				fmt.Printf("                   etc.  Defaults to 'ci.yml'\n")
 				return nil
 			}
 
-			ansi.Fprintf(os.Stdout, "This is genesis describe.")
+			fmt.Printf("This is genesis describe.")
 			return nil
 		})
 
@@ -160,13 +159,13 @@ func main() {
 	c.Dispatch("download", "Download a Genesis Kit from the Internet.",
 		func(opts Options, args []string, help bool) error {
 			if help {
-				ansi.Fprintf(os.Stdout, "genesis v%s\n", Version)
-				ansi.Fprintf(os.Stdout, "USAGE: genesis download NAME[/VERSION] [...]\n\n")
-				ansi.Fprintf(os.Stdout, "OPTIONS\n")
+				fmt.Printf("genesis v%s\n", Version)
+				fmt.Printf("USAGE: genesis download NAME[/VERSION] [...]\n\n")
+				fmt.Printf("OPTIONS\n")
 				return nil
 			}
 
-			ansi.Fprintf(os.Stdout, "This is genesis download.")
+			fmt.Printf("This is genesis download.")
 			return nil
 		})
 
@@ -174,16 +173,16 @@ func main() {
 	c.Dispatch("graph", "Draw a Concourse pipeline.",
 		func(opts Options, args []string, help bool) error {
 			if help {
-				ansi.Fprintf(os.Stdout, "genesis v%s\n", Version)
-				ansi.Fprintf(os.Stdout, "USAGE: genesis graph [pipeline-layout]\n\n")
-				ansi.Fprintf(os.Stdout, "OPTIONS\n")
-				ansi.Fprintf(os.Stdout, "  -c, --config     Path to the pipeline configuration file, which specifies\n")
-				ansi.Fprintf(os.Stdout, "                   Git parameters, notification settings, pipeline layouts,\n")
-				ansi.Fprintf(os.Stdout, "                   etc.  Defaults to 'ci.yml'\n")
+				fmt.Printf("genesis v%s\n", Version)
+				fmt.Printf("USAGE: genesis graph [pipeline-layout]\n\n")
+				fmt.Printf("OPTIONS\n")
+				fmt.Printf("  -c, --config     Path to the pipeline configuration file, which specifies\n")
+				fmt.Printf("                   Git parameters, notification settings, pipeline layouts,\n")
+				fmt.Printf("                   etc.  Defaults to 'ci.yml'\n")
 				return nil
 			}
 
-			ansi.Fprintf(os.Stdout, "This is genesis graph.")
+			fmt.Printf("This is genesis graph.")
 			return nil
 		})
 
@@ -191,15 +190,15 @@ func main() {
 	c.Dispatch("init", "Initialize a new Genesis deployment.",
 		func(opts Options, args []string, help bool) error {
 			if help {
-				ansi.Fprintf(os.Stdout, "genesis v%s\n", Version)
-				ansi.Fprintf(os.Stdout, "USAGE: genesis init [-k KIT/VERSION] name\n\n")
-				ansi.Fprintf(os.Stdout, "OPTIONS\n")
-				ansi.Fprintf(os.Stdout, "  -k, --kit        Name (and optionally, version) of the Genesis Kit to\n")
-				ansi.Fprintf(os.Stdout, "                   base these deployments on.  i.e.: shield/6.3.0\n")
+				fmt.Printf("genesis v%s\n", Version)
+				fmt.Printf("USAGE: genesis init [-k KIT/VERSION] name\n\n")
+				fmt.Printf("OPTIONS\n")
+				fmt.Printf("  -k, --kit        Name (and optionally, version) of the Genesis Kit to\n")
+				fmt.Printf("                   base these deployments on.  i.e.: shield/6.3.0\n")
 				return nil
 			}
 
-			ansi.Fprintf(os.Stdout, "This is genesis init.")
+			fmt.Printf("This is genesis init.")
 			return nil
 		})
 
@@ -207,13 +206,13 @@ func main() {
 	c.Dispatch("lookup", "Find a key set in environment manifests.",
 		func(opts Options, args []string, help bool) error {
 			if help {
-				ansi.Fprintf(os.Stdout, "genesis v%s\n", Version)
-				ansi.Fprintf(os.Stdout, "USAGE: genesis lookup key env-name default-value\n\n")
-				ansi.Fprintf(os.Stdout, "OPTIONS\n")
+				fmt.Printf("genesis v%s\n", Version)
+				fmt.Printf("USAGE: genesis lookup key env-name default-value\n\n")
+				fmt.Printf("OPTIONS\n")
 				return nil
 			}
 
-			ansi.Fprintf(os.Stdout, "This is genesis lookup.")
+			fmt.Printf("This is genesis lookup.")
 			return nil
 		})
 
@@ -221,17 +220,17 @@ func main() {
 	c.Dispatch("manifest", "Compile a deployment manifest.",
 		func(opts Options, args []string, help bool) error {
 			if help {
-				ansi.Fprintf(os.Stdout, "genesis v%s\n", Version)
-				ansi.Fprintf(os.Stdout, "USAGE: genesis manifest [--no-redact] [--cloud-config path.yml] deployment-env.yml\n\n")
-				ansi.Fprintf(os.Stdout, "OPTIONS\n")
-				ansi.Fprintf(os.Stdout, "$GLOBAL_USAGE\n\n")
-				ansi.Fprintf(os.Stdout, "  -c, --cloud-config PATH    Path to your downloaded BOSH cloud-config\n\n")
-				ansi.Fprintf(os.Stdout, "      --no-redact            Do not redact credentials in the manifest.\n")
-				ansi.Fprintf(os.Stdout, "                             USE THIS OPTION WITH GREAT CARE AND CAUTION.\n")
+				fmt.Printf("genesis v%s\n", Version)
+				fmt.Printf("USAGE: genesis manifest [--no-redact] [--cloud-config path.yml] deployment-env.yml\n\n")
+				fmt.Printf("OPTIONS\n")
+				fmt.Printf("$GLOBAL_USAGE\n\n")
+				fmt.Printf("  -c, --cloud-config PATH    Path to your downloaded BOSH cloud-config\n\n")
+				fmt.Printf("      --no-redact            Do not redact credentials in the manifest.\n")
+				fmt.Printf("                             USE THIS OPTION WITH GREAT CARE AND CAUTION.\n")
 				return nil
 			}
 
-			ansi.Fprintf(os.Stdout, "This is genesis manifest.")
+			fmt.Printf("This is genesis manifest.")
 			return nil
 		})
 
@@ -239,15 +238,15 @@ func main() {
 	c.Dispatch("new", "Create a new Genesis deployment environment.",
 		func(opts Options, args []string, help bool) error {
 			if help {
-				ansi.Fprintf(os.Stdout, "genesis v%s\n", Version)
-				ansi.Fprintf(os.Stdout, "USAGE: genesis new [--vault target] env-name[.yml]\n\n")
-				ansi.Fprintf(os.Stdout, "OPTIONS\n")
-				ansi.Fprintf(os.Stdout, "      --vault      The name of a `safe' target (a Vault) to store newly\n")
-				ansi.Fprintf(os.Stdout, "                   generated credentials in.\n")
+				fmt.Printf("genesis v%s\n", Version)
+				fmt.Printf("USAGE: genesis new [--vault target] env-name[.yml]\n\n")
+				fmt.Printf("OPTIONS\n")
+				fmt.Printf("      --vault      The name of a `safe' target (a Vault) to store newly\n")
+				fmt.Printf("                   generated credentials in.\n")
 				return nil
 			}
 
-			ansi.Fprintf(os.Stdout, "This is genesis new.")
+			fmt.Printf("This is genesis new.")
 			return nil
 		})
 
@@ -255,13 +254,14 @@ func main() {
 	c.Dispatch("ping", "See if the genesis binary is a real thing.",
 		func(opts Options, args []string, help bool) error {
 			if help {
-				ansi.Fprintf(os.Stdout, "genesis v%s\n", Version)
-				ansi.Fprintf(os.Stdout, "USAGE: genesis ping\n\n")
-				ansi.Fprintf(os.Stdout, "OPTIONS\n")
+				fmt.Printf("genesis v%s\n", Version)
+				fmt.Printf("USAGE: genesis ping\n\n")
+				fmt.Printf("OPTIONS\n")
 				return nil
 			}
 
-			ansi.Fprintf(os.Stdout, "This is genesis ping.")
+			checkPrerequisites()
+			fmt.Printf("PING\n")
 			return nil
 		})
 
@@ -269,21 +269,21 @@ func main() {
 	c.Dispatch("repipe", "Configure a Concourse pipeline for automating deployments.",
 		func(opts Options, args []string, help bool) error {
 			if help {
-				ansi.Fprintf(os.Stdout, "genesis v%s\n", Version)
-				ansi.Fprintf(os.Stdout, "USAGE: genesis repipe [pipeline-layout]\n\n")
-				ansi.Fprintf(os.Stdout, "OPTIONS\n")
-				ansi.Fprintf(os.Stdout, "  -t, --target     The name of your Concourse target (per `fly targets'),\n")
-				ansi.Fprintf(os.Stdout, "                   if it differs from the pipeline layout name.\n\n")
-				ansi.Fprintf(os.Stdout, "  -n, --dry-run    Generate the Concourse Pipeline configuration, but\n")
-				ansi.Fprintf(os.Stdout, "                   refrain from actually deploying it to Concourse.\n")
-				ansi.Fprintf(os.Stdout, "                   Instead, just print the YAML.\n\n")
-				ansi.Fprintf(os.Stdout, "  -c, --config     Path to the pipeline configuration file, which specifies\n")
-				ansi.Fprintf(os.Stdout, "                   Git parameters, notification settings, pipeline layouts,\n")
-				ansi.Fprintf(os.Stdout, "                   etc.  Defaults to 'ci.yml'\n")
+				fmt.Printf("genesis v%s\n", Version)
+				fmt.Printf("USAGE: genesis repipe [pipeline-layout]\n\n")
+				fmt.Printf("OPTIONS\n")
+				fmt.Printf("  -t, --target     The name of your Concourse target (per `fly targets'),\n")
+				fmt.Printf("                   if it differs from the pipeline layout name.\n\n")
+				fmt.Printf("  -n, --dry-run    Generate the Concourse Pipeline configuration, but\n")
+				fmt.Printf("                   refrain from actually deploying it to Concourse.\n")
+				fmt.Printf("                   Instead, just print the YAML.\n\n")
+				fmt.Printf("  -c, --config     Path to the pipeline configuration file, which specifies\n")
+				fmt.Printf("                   Git parameters, notification settings, pipeline layouts,\n")
+				fmt.Printf("                   etc.  Defaults to 'ci.yml'\n")
 				return nil
 			}
 
-			ansi.Fprintf(os.Stdout, "This is genesis repipe.")
+			fmt.Printf("This is genesis repipe.")
 			return nil
 		})
 
@@ -291,17 +291,17 @@ func main() {
 	c.Dispatch("secrets", "Re-generate // rotate credentials (passwords, keys, etc.).",
 		func(opts Options, args []string, help bool) error {
 			if help {
-				ansi.Fprintf(os.Stdout, "genesis v%s\n", Version)
-				ansi.Fprintf(os.Stdout, "USAGE: genesis secrets [--rotate] [--vault target] deployment-env.yml\n\n")
-				ansi.Fprintf(os.Stdout, "OPTIONS\n")
-				ansi.Fprintf(os.Stdout, "      --rotate     Rotate credentials.  Any non-fixed credentials defined\n")
-				ansi.Fprintf(os.Stdout, "                   by the kit will be regenerated in the Vault.\n")
-				ansi.Fprintf(os.Stdout, "      --vault      The name of a `safe' target (a Vault) to store newly\n")
-				ansi.Fprintf(os.Stdout, "                   generated credentials in.\n")
+				fmt.Printf("genesis v%s\n", Version)
+				fmt.Printf("USAGE: genesis secrets [--rotate] [--vault target] deployment-env.yml\n\n")
+				fmt.Printf("OPTIONS\n")
+				fmt.Printf("      --rotate     Rotate credentials.  Any non-fixed credentials defined\n")
+				fmt.Printf("                   by the kit will be regenerated in the Vault.\n")
+				fmt.Printf("      --vault      The name of a `safe' target (a Vault) to store newly\n")
+				fmt.Printf("                   generated credentials in.\n")
 				return nil
 			}
 
-			ansi.Fprintf(os.Stdout, "This is genesis secrets.")
+			fmt.Printf("This is genesis secrets.")
 			return nil
 		})
 
@@ -309,14 +309,14 @@ func main() {
 	c.Dispatch("summary", "Print a summary of defined environments.",
 		func(opts Options, args []string, help bool) error {
 			if help {
-				ansi.Fprintf(os.Stdout, "genesis v$VERSION\n")
-				ansi.Fprintf(os.Stdout, "USAGE: genesis summary\n\n")
-				ansi.Fprintf(os.Stdout, "OPTIONS\n")
-				ansi.Fprintf(os.Stdout, "$GLOBAL_USAGE\n")
+				fmt.Printf("genesis v$VERSION\n")
+				fmt.Printf("USAGE: genesis summary\n\n")
+				fmt.Printf("OPTIONS\n")
+				fmt.Printf("$GLOBAL_USAGE\n")
 				return nil
 			}
 
-			ansi.Fprintf(os.Stdout, "This is genesis summary.")
+			fmt.Printf("This is genesis summary.")
 			return nil
 		})
 
@@ -324,9 +324,9 @@ func main() {
 	c.Dispatch("version", "Print the current version of Genesis.",
 		func(opts Options, args []string, help bool) error {
 			if Version == "" {
-				ansi.Fprintf(os.Stdout, "genesis @C{(development release)}\n")
+				fmt.Printf("genesis @C{(development release)}\n")
 			} else {
-				ansi.Fprintf(os.Stdout, "genesis v%s\n", Version)
+				fmt.Printf("genesis v%s\n", Version)
 			}
 			return nil
 		})
@@ -335,19 +335,19 @@ func main() {
 	c.Dispatch("yamls", "Print a list of the YAML files used for a single environment.",
 		func(opts Options, args []string, help bool) error {
 			if help {
-				ansi.Fprintf(os.Stdout, "genesis v%s\n", Version)
-				ansi.Fprintf(os.Stdout, "USAGE: genesis yamls deployment-env.yml\n\n")
-				ansi.Fprintf(os.Stdout, "OPTIONS\n")
+				fmt.Printf("genesis v%s\n", Version)
+				fmt.Printf("USAGE: genesis yamls deployment-env.yml\n\n")
+				fmt.Printf("OPTIONS\n")
 				return nil
 			}
 
-			ansi.Fprintf(os.Stdout, "This is genesis yamls.")
+			fmt.Printf("This is genesis yamls.")
 			return nil
 		})
 
 	err := c.Execute(os.Args[1:]...)
 	if err != nil {
-		ansi.Fprintf(os.Stderr, "@R{!!! %s}\n", err)
+		fmt.Fprintf(os.Stderr, "@R{!!! %s}\n", err)
 		os.Exit(1)
 	}
 }

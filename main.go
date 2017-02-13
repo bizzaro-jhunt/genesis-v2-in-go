@@ -108,6 +108,7 @@ func main() {
 	c.Alias("usage", "help")
 
 	/* genesis compile-kit */
+	// FIXME: implement
 	c.Dispatch("compile-kit", "Create a distributable kit archive from dev.",
 		func(opts Options, args []string, help bool) error {
 			if help {
@@ -124,6 +125,7 @@ func main() {
 		})
 
 	/* genesis decompile-kit */
+	// FIXME: implement
 	c.Dispatch("decompile-kit", "Unpack a kit archive to dev.",
 		func(opts Options, args []string, help bool) error {
 			if help {
@@ -139,6 +141,7 @@ func main() {
 		})
 
 	/* genesis describe */
+	// FIXME: implement
 	c.Dispatch("describe", "Describe a Concourse pipeline with words.",
 		func(opts Options, args []string, help bool) error {
 			if help {
@@ -156,6 +159,7 @@ func main() {
 		})
 
 	/* genesis download */
+	// FIXME: implement
 	c.Dispatch("download", "Download a Genesis Kit from the Internet.",
 		func(opts Options, args []string, help bool) error {
 			if help {
@@ -170,6 +174,7 @@ func main() {
 		})
 
 	/* genesis graph */
+	// FIXME: implement
 	c.Dispatch("graph", "Draw a Concourse pipeline.",
 		func(opts Options, args []string, help bool) error {
 			if help {
@@ -187,6 +192,7 @@ func main() {
 		})
 
 	/* genesis init */
+	// FIXME: implement
 	c.Dispatch("init", "Initialize a new Genesis deployment.",
 		func(opts Options, args []string, help bool) error {
 			if help {
@@ -203,6 +209,7 @@ func main() {
 		})
 
 	/* genesis lookup */
+	// FIXME: implement
 	c.Dispatch("lookup", "Find a key set in environment manifests.",
 		func(opts Options, args []string, help bool) error {
 			if help {
@@ -217,6 +224,7 @@ func main() {
 		})
 
 	/* genesis manifest */
+	// FIXME: implement
 	c.Dispatch("manifest", "Compile a deployment manifest.",
 		func(opts Options, args []string, help bool) error {
 			if help {
@@ -235,6 +243,7 @@ func main() {
 		})
 
 	/* genesis new */
+	// FIXME: implement
 	c.Dispatch("new", "Create a new Genesis deployment environment.",
 		func(opts Options, args []string, help bool) error {
 			if help {
@@ -266,6 +275,7 @@ func main() {
 		})
 
 	/* genesis repipe */
+	// FIXME: implement
 	c.Dispatch("repipe", "Configure a Concourse pipeline for automating deployments.",
 		func(opts Options, args []string, help bool) error {
 			if help {
@@ -288,6 +298,7 @@ func main() {
 		})
 
 	/* genesis secrets */
+	// FIXME: implement
 	c.Dispatch("secrets", "Re-generate // rotate credentials (passwords, keys, etc.).",
 		func(opts Options, args []string, help bool) error {
 			if help {
@@ -306,6 +317,7 @@ func main() {
 		})
 
 	/* genesis summary */
+	// FIXME: implement
 	c.Dispatch("summary", "Print a summary of defined environments.",
 		func(opts Options, args []string, help bool) error {
 			if help {
@@ -321,6 +333,7 @@ func main() {
 		})
 
 	/* genesis version */
+	// FIXME: implement
 	c.Dispatch("version", "Print the current version of Genesis.",
 		func(opts Options, args []string, help bool) error {
 			if Version == "" {
@@ -332,6 +345,7 @@ func main() {
 		})
 
 	/* genesis yamls */
+	// FIXME: implement
 	c.Dispatch("yamls", "Print a list of the YAML files used for a single environment.",
 		func(opts Options, args []string, help bool) error {
 			if help {

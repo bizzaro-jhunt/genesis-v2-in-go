@@ -1,0 +1,4 @@
+---
+params:
+  # this should activate the 'webdav' subkit
+  blobstore_type: webdav

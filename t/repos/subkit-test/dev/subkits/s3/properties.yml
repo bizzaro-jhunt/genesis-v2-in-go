@@ -1,0 +1,6 @@
+---
+properties:
+  blobstore:
+    config:
+      aki: yup, we got one
+      secret: haha

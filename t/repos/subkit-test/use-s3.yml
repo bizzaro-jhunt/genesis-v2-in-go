@@ -1,0 +1,4 @@
+---
+params:
+  # this should activate the 's3' subkit
+  blobstore_type: s3

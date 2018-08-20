@@ -1,0 +1,13 @@
+---
+name: Vault Testing Kit
+
+vault:
+  random:
+    password: random 42
+  ssh: ssh 4096
+  rsa: rsa 4096
+
+  fixed:
+    password: random 8 fixed
+  ext_ssh: ssh 4096 fixed
+  ext_rsa: rsa 4096 fixed

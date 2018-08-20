@@ -1,0 +1,5 @@
+---
+properties:
+  blobstore:
+    type: (( grab params.blobstore_type ))
+    config: (( param "This kit is broken; please report a bug..." ))

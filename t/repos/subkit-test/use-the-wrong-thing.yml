@@ -1,0 +1,5 @@
+---
+params:
+  # this is an invalid blobstore type,
+  # and should trigger the appropriate error
+  blobstore_type: magic

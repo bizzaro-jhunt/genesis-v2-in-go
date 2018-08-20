@@ -40,22 +40,10 @@ func main() {
 		Yes:     getopt.BoolLong("yes", 'y', "Answer 'yes' to all questions automatically."),
 	}
 
-	var command []string
-	var opts = getopt.CommandLine
-	args := os.Args
-	for {
-		opts.Parse(args)
-		if opts.NArgs() == 0 {
-			break
-		}
-		command = append(command, opts.Arg(0))
-		args = opts.Args()
-	}
+	opts := getopt.CommandLine
+	opts.Parse(os.Args)
 
-	if len(command) == 0 {
-		command = []string{"help"}
-	}
-
+	args := opts.Args()
 	debug = *options.Debug
 
 	c := NewCommand().With(options)
@@ -194,7 +182,7 @@ func main() {
 	/* genesis init */
 	// FIXME: implement
 	c.Dispatch("init", "Initialize a new Genesis deployment.",
-		func(opts Options, args []string, help bool) error {
+		func(global Options, args []string, help bool) error {
 			if help {
 				fmt.Printf("genesis v%s\n", Version)
 				fmt.Printf("USAGE: genesis init [-k KIT/VERSION] name\n\n")
@@ -204,7 +192,60 @@ func main() {
 				return nil
 			}
 
-			fmt.Printf("This is genesis init.")
+			getopt.Reset()
+			kitver := getopt.StringLong("kit", 'k', "", "Name (and optionally, version) of the Genesis Kit to base these deployments on")
+			isdev := getopt.BoolLong("dev", 'd', "Whether or not to create a dev/ kit")
+
+			opts := getopt.CommandLine
+			args = append([]string{"init"}, args...)
+			opts.Parse(args)
+			args = opts.Args()
+
+			if len(args) != 1 {
+				fmt.Fprintf(os.Stderr, "@R{USAGE...}\n")
+				os.Exit(3)
+			}
+
+			checkPrerequisites()
+
+			name := strings.TrimSuffix(args[0], "-deployments")
+
+			if isdev != nil && *isdev && kitver != nil {
+				fmt.Fprintf(os.Stderr, "@R{You cannot specify both --kit and --dev, together.}\n")
+				os.Exit(3)
+			}
+			if !validRepoName(name) {
+				fmt.Fprintf(os.Stderr, "@R{Invalid Genesis repo name '%s'}\n", name)
+				os.Exit(3)
+			}
+
+			if kitver != nil {
+				fmt.Printf("using kit %s\n", *kitver)
+			}
+			if isdev != nil && *isdev {
+				fmt.Printf("creating a deelopment deployment\n")
+			}
+
+			mkdirs(root, ".genesis", "bin")
+			f, err := os.OpenFile(root + "/.genesis/config", 0, 0666)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "@R{!!! %s}\n", err)
+				os.Exit(3)
+			}
+			fmt.Fprintf(f, "---\n")
+			fmt.Fprintf(f, "genesis: %s\n", Version)
+			f.Close()
+
+			copySelf(root + "/.genesis/bin/genesis")
+			if isdev && *isdev {
+				mkdirs(root, "dev")
+			}
+
+			for _, option := range args {
+				fmt.Printf(" - %s\n", option)
+			}
+
+			fmt.Printf("This is genesis init.\n")
 			return nil
 		})
 
@@ -359,7 +400,7 @@ func main() {
 			return nil
 		})
 
-	err := c.Execute(os.Args[1:]...)
+	err := c.Execute(args...)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "@R{!!! %s}\n", err)
 		os.Exit(1)

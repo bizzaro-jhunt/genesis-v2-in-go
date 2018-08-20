@@ -1,0 +1,44 @@
+#!/bin/bash
+
+#
+# called as `identify env-name-with-hyphens-no-suffix
+#
+# the trick is to handle cases where `blobstore_type' could
+# exist in any of the following files:
+#
+#   - env-name-with-hyphens-no-suffix.yml
+#   - env-name-with-hyphens-no.yml
+#   - env-name-with-hyphens.yml
+#   - env-name-with.yml
+#   - env-name.yml
+#   - env.yml
+
+set -e
+type=$(genesis lookup params.blobstore_type $1 null);
+case $type in
+s3)     echo s3     ;;
+webdav) echo webdav ;;
+null)
+	cat >&2 <<EOF
+I could not find params.blobstore_type in $1
+(or in any of its predecessor files).
+
+I need to know what blobstore type you wish to use
+for this deployment.  Valid values are 's3' for an
+Amazon-backed blobstore solution, or 'webdav', for
+a locally-hosted HTTP/DAV solution.
+EOF
+	exit 66
+	;;
+*)
+	cat >&2 <<EOF
+'$type' does not look like a valid blobstore_type.
+
+I need to know what blobstore type you wish to use
+for this deployment.  Valid values are 's3' for an
+Amazon-backed blobstore solution, or 'webdav', for
+a locally-hosted HTTP/DAV solution.
+EOF
+	exit 67
+esac
+exit 0
